@@ -80,3 +80,36 @@ still has a linear history. Conflict handling is out of scope for this post.
 Now, we can push our local branch to github.
 
     # git push
+
+## Merging a merge request
+
+As a maintainer, when you get a merge request, you could simply use the github
+interface to merge the request. However, this results in a non-linear history as
+github does ```--no-ff``` meaning, it does add a merge commit. To avoid this we
+can simply do the following. (I next assume syntagmatic is merging my request)
+
+First he adds my clone as a remote repo.
+
+    master # git remote add bbroeksema git@github.com:bbroeksema/parallel-coordinates.git
+
+Next he creates a new branch in which he will checkout my feature.
+
+    master # git checkout -b brushextents
+    brushextents # git pull bbroeksema brushextents
+    
+Now, he has the new feature, he switches back to master.
+
+    brushextents # git checkout master
+
+And merges the brushextents branch.
+
+    master # git merge brushextents
+    
+This doesn't result in a merge commit, as the brushextents branch can be fast
+forwarded on master. Finally, we push the newly merged feature to github and
+get rid of the local branch.
+
+    master # git push
+    master # git branch -d brushextents
+
+    
